@@ -2,8 +2,8 @@ import express from "express";
 const app = express();
 import mongoose from "mongoose";
 const port = 3000;
-const authRoutes = require("./routes/auth");
-const todoRoutes = require("./routes/todo");
+import authRoutes from "./routes/auth";
+import todoRoutes from "./routes/todo";
 import cors from "cors";
 require("dotenv").config();
 
@@ -16,4 +16,10 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
 
-mongoose.connect(process.env.ATLAS_URI);
+const uri: string | undefined = process.env.ATLAS_URI;
+
+if (uri) {
+  mongoose.connect(uri);
+} else {
+  console.error("ATLAS_URI environment variable is not defined.");
+}
